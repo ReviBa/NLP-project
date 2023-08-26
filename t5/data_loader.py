@@ -16,13 +16,19 @@ class T5DataLoader(pl.LightningDataModule):
 
     def setup(self):
         self.train_data = T5DataSet(
-            input=self.df_train.input.values,
-            target=self.df_train.target.values
+            self.df_train.input.values,
+            self.df_train.target.values,
+            self.tokenizer,
+            self.input_max_len,
+            self.out_max_len
         )
 
         self.valid_data = T5DataSet(
-            input=self.df_test.input.values,
-            target=self.df_test.target.values
+            self.df_test.input.values,
+            self.df_test.target.values,
+            self.tokenizer,
+            self.input_max_len,
+            self.out_max_len
         )
 
     def train_dataloader(self):

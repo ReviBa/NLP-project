@@ -3,7 +3,7 @@ import string
 
 
 def get_tokenizer_based_on_data(df, input_col_name, target_col_name, base_tokenizer="t5-base", min_frequency=3):
-    tokenizer = T5Tokenizer.from_pretrained(base_tokenizer, model_max_length=get_max_tokens_number(df, input_col_name, target_col_name))
+    tokenizer = T5Tokenizer.from_pretrained(base_tokenizer, model_max_length=max(get_max_tokens_number(df, input_col_name, target_col_name)))
     all_tokens = []
 
     for idx, row in df.iterrows():
@@ -32,4 +32,4 @@ def get_max_tokens_number(df, col_name1, col_name2):
     wc_a = df[col_name2].apply(lambda x: len(str(x).split()))
     input_max_len = wc_q.max()
     output_max_len = wc_a.max()
-    return max(input_max_len, output_max_len)
+    return input_max_len, output_max_len
