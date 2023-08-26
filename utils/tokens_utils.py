@@ -2,8 +2,8 @@ from transformers import T5Tokenizer
 import string
 
 
-def get_tokenizer_based_on_data(df, base_tokenizer, min_frequency=3):
-    tokenizer = T5Tokenizer.from_pretrained(base_tokenizer, model_max_length=512)
+def get_tokenizer_based_on_data(df, input_col_name, target_col_name, base_tokenizer, min_frequency=3):
+    tokenizer = T5Tokenizer.from_pretrained(base_tokenizer, model_max_length=get_max_tokens_number(df, input_col_name, target_col_name))
     all_tokens = []
 
     for idx, row in df.iterrows():
@@ -26,3 +26,10 @@ def get_tokenizer_based_on_data(df, base_tokenizer, min_frequency=3):
     tokenizer.add_tokens(list(new_tokens))
     return tokenizer
 
+
+def get_max_tokens_number(df, col_name1, col_name2):
+    wc_q = df[col_name1].apply(lambda x: len(str(x).split()))
+    wc_a = df[col_name2].apply(lambda x: len(str(x).split()))
+    input_max_len = wc_q.max()
+    output_max_len = wc_a.max()
+    return max(input_max_len, output_max_len)
