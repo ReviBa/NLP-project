@@ -1,5 +1,5 @@
 import pytorch_lightning as pl
-from data_set import T5DataSet
+from t5.data_set import T5DataSet
 import torch
 
 
