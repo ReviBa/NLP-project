@@ -7,7 +7,7 @@ def get_tokenizer_based_on_data(df, input_col_name, target_col_name, base_tokeni
     all_tokens = []
 
     for idx, row in df.iterrows():
-        line = "{speaker}: {line}".format(speaker=row['speaker'], line=row['line'])
+        line = "{speaker}: {line}".format(speaker=row[input_col_name], line=row[target_col_name])
         tokenized = ['_' + word.strip(string.punctuation) for word in line.split() if
                      word.strip(string.punctuation).isalnum()]
         all_tokens += tokenized
