@@ -1,19 +1,18 @@
 class T5DataSet:
 
-    def __init__(self, question, answer, tokenizer, input_max_len, output_max_len):
-        self.question = question
-        self.answer = answer
+    def __init__(self, input, target, tokenizer, input_max_len, output_max_len):
+        self.input = input
+        self.target = target
         self.tokenizer = tokenizer
         self.input_max_len = input_max_len
         self.output_max_len = output_max_len
 
     def __len__(self):
-        return len(self.question)
+        return len(self.input)
 
     def __getitem__(self, item):
-        question = str(self.question[item])
-
-        answer = str(self.answer[item])
+        question = str(self.input[item])
+        answer = str(self.target[item])
 
         input_tokenize = self.tokenizer(
             question,
