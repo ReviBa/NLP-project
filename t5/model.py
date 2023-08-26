@@ -1,6 +1,7 @@
 import pytorch_lightning as pl
 from transformers import AdamW
 from transformers import T5Tokenizer, T5ForConditionalGeneration
+import torch
 
 
 class T5Model(pl.LightningModule):
@@ -34,3 +35,8 @@ class T5Model(pl.LightningModule):
 
     def configure_optimizers(self):
         return AdamW(self.parameters(), lr=3e-4)
+
+    def load_from_checkpoint_with_custom_tokenizer(self, tokenizer, checkpoint_path):
+        self.model.resize_token_embeddings(len(tokenizer))
+        checkpoint = torch.load(checkpoint_path)
+        self.load_state_dict(checkpoint['state_dict'])
