@@ -8,18 +8,31 @@ def clean_response(response):
 
 
 class DialogContextManager:
-    def __init__(self, model, tokenizer, max_input_len):
+    def __init__(self, model, tokenizer, max_input_len, device, style_transfer_model=None):
         self.context = []
         self.model = model
         self.tokenizer = tokenizer
         self.max_input_len = max_input_len
         self.speaker_str = 'Person1'
+        self.style_transfer_model=style_transfer_model
+        self.device = device
 
-    def write(self, message):
+    def write(self, message, debug=False):
         self.context.append(f"{self.speaker_str}:{message}")
 
+        response = self._generate_answer(self.context)
+
+        if self.style_transfer_model is not None:
+            if debug:
+                print("generic response: ", response)
+            response = self._generate_answer(response.replace("Person2:", ""))
+
+        self.context.append(response)
+        return response
+
+    def _generate_answer(self, question):
         inputs_encoding = self.tokenizer(
-            "".join(self.context),
+            "".join(question),
             add_special_tokens=True,
             max_length=self.max_input_len,
             padding='max_length',
@@ -29,8 +42,8 @@ class DialogContextManager:
         )
 
         generate_ids = self.model.model.generate(
-            input_ids=inputs_encoding["input_ids"],
-            attention_mask=inputs_encoding["attention_mask"],
+            input_ids=inputs_encoding["input_ids"].to(self.device),
+            attention_mask=inputs_encoding["attention_mask"].to(self.device),
             max_length=self.max_input_len,
             num_return_sequences=1,
             no_repeat_ngram_size=2,
@@ -43,6 +56,5 @@ class DialogContextManager:
         ]
 
         response = clean_response("".join(preds))
-        self.context.append(response)
-
         return response
+
