@@ -33,3 +33,4 @@ def t5_train(data, device, tokenizer, base_model_name, input_max_len, out_max_le
     )
 
     trainer.fit(model, dataloader)
+    return model, trainer
