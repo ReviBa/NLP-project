@@ -13,6 +13,7 @@ def t5_train(data, device, tokenizer, base_model_name, input_max_len, out_max_le
                               test_batch_size)
     dataloader.setup()
     model = T5Model(base_model_name)
+    model.model.resize_token_embeddings(len(tokenizer))
     if train_from_checkpoint:
         model.load_from_checkpoint_with_custom_tokenizer(tokenizer, train_from_checkpoint)
     model.to(device)
