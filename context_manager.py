@@ -17,10 +17,10 @@ class DialogContextManager:
         self.style_transfer_model=style_transfer_model
         self.device = device
 
-    def write(self, message, debug=False):
+    def write(self, message, debug=False, num_beams=1):
         self.context.append(f"{self.speaker_str}:{message}")
 
-        response = self._generate_answer(self.context, self.model)
+        response = self._generate_answer(self.context, self.model, num_beams)
 
         if self.style_transfer_model is not None:
             if debug:
