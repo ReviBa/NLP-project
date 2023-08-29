@@ -20,17 +20,17 @@ class DialogContextManager:
     def write(self, message, debug=False):
         self.context.append(f"{self.speaker_str}:{message}")
 
-        response = self._generate_answer(self.context)
+        response = self._generate_answer(self.context, self.model)
 
         if self.style_transfer_model is not None:
             if debug:
                 print("generic response: ", response)
-            response = self._generate_answer(response.replace("Person2:", ""))
+            response = self._generate_answer(response.replace("Person2:", ""), self.style_transfer_model)
 
         self.context.append(response)
         return response
 
-    def _generate_answer(self, question):
+    def _generate_answer(self, question, model):
         inputs_encoding = self.tokenizer(
             "".join(question),
             add_special_tokens=True,
@@ -41,7 +41,7 @@ class DialogContextManager:
             return_tensors="pt"
         )
 
-        generate_ids = self.model.model.generate(
+        generate_ids = model.model.generate(
             input_ids=inputs_encoding["input_ids"].to(self.device),
             attention_mask=inputs_encoding["attention_mask"].to(self.device),
             max_length=self.max_input_len,
@@ -57,4 +57,3 @@ class DialogContextManager:
 
         response = clean_response("".join(preds))
         return response
-
