@@ -30,7 +30,7 @@ class DialogContextManager:
         self.context.append(response)
         return response
 
-    def _generate_answer(self, question, model):
+    def _generate_answer(self, question, model, num_beams=1):
         inputs_encoding = self.tokenizer(
             "".join(question),
             add_special_tokens=True,
@@ -48,6 +48,7 @@ class DialogContextManager:
             num_return_sequences=1,
             no_repeat_ngram_size=2,
             early_stopping=True,
+            num_beams=num_beams
         )
 
         preds = [
