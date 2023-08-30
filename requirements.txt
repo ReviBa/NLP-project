@@ -1,4 +1,4 @@
-transformers==4.27.2
+transformers
 pytorch_pretrained_bert
 sentencepiece
 sentence_transformers
