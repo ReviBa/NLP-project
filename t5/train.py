@@ -1,4 +1,4 @@
-from t5.consts import TEST_SIZE, RANDOM_STATE
+from t5.config import TEST_SIZE, RANDOM_STATE
 from sklearn.model_selection import train_test_split
 from pytorch_lightning.callbacks import ModelCheckpoint
 from t5.data_loader import T5DataLoader

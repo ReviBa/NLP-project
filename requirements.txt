@@ -4,3 +4,4 @@ sentencepiece
 sentence_transformers
 pytorch_lightning==1.5.10
 datasets
+torch
