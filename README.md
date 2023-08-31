@@ -29,4 +29,5 @@ We used to evaluaion methods:
 1. BELU score (which proved itself inefficent)
 2. dedicated classifier detecting if the sentence is Michels or Not.
    We see segnificant improvment when using our models comparing to a a model that was trained on simple dialog.
+   
    ![image](https://github.com/ReviBa/NLP-project/assets/54176455/8a114971-1f00-44b2-bbcf-42280c9dd5a0)
