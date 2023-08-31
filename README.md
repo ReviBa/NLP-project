@@ -19,7 +19,7 @@ For each model, we present 3 main resources:
 
 # Usage
 We created a playground.ipynb file for you, where you can load the models and interact with them.
-Here some example of our models unswers: 
+Here some example of our models answers: 
 
 ![image](https://github.com/ReviBa/NLP-project/assets/54176455/9562304c-6b30-4814-86d2-b1e279280976)
 
