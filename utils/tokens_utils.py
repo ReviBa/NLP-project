@@ -8,6 +8,8 @@ def get_tokenizer_based_on_data(df, speaker_col_name, line_col_name, base_tokeni
 
     for idx, row in df.iterrows():
         line = "{speaker}: {line}".format(speaker=row[speaker_col_name], line=row[line_col_name])
+        # underscore is added to each token to fit the format of SentencePiece tokenizer
+        # we tried to use SentencePiece itself, but it completely broke the tokenization
         tokenized = ['_' + word.strip(string.punctuation) for word in line.split() if
                      word.strip(string.punctuation).isalnum()]
         all_tokens += tokenized
