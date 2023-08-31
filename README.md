@@ -23,7 +23,7 @@ Here some example of our models unswers:
 
 
 
-#Evaluation
+# Evaluation
 The evaluation of the models is under the corresponding folder.
 We used to evaluaion methods:
 1. BELU score (which proved itself inefficent)
