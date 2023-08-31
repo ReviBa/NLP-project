@@ -19,7 +19,9 @@ For each model, we present 3 main resources:
 
 # Usage
 We created a playground.ipynb file for you, where you can load the models and interact with them.
-Here some example of our models unswers: 
+Here some example of our models answers: 
+
+![image](https://github.com/ReviBa/NLP-project/assets/54176455/9562304c-6b30-4814-86d2-b1e279280976)
 
 
 
@@ -27,7 +29,7 @@ Here some example of our models unswers:
 The evaluation of the models is under the corresponding folder.
 We used to evaluaion methods:
 1. BELU score (which proved itself inefficent)
-2. dedicated classifier detecting if the sentence is Michels or Not.
+2. Dedicated classifier detecting if the sentence is Michel's or Not.
    We see segnificant improvment when using our models comparing to a a model that was trained on simple dialog.
    
    ![image](https://github.com/ReviBa/NLP-project/assets/54176455/8a114971-1f00-44b2-bbcf-42280c9dd5a0)
