@@ -34,7 +34,7 @@ class DialogContextManager:
         self.device = device
         self.sentence_completion_model = sentence_completion_model
 
-    def write(self, message, debug=False, num_beams=1, temperature=1):
+    def write(self, message, debug=False, **kwargs):
         """
         write a question to model
         :param temperature: see _generate_answer()
@@ -46,7 +46,7 @@ class DialogContextManager:
         self.context.append(f"{self.speaker_str}{message}")
         self.context_pretty.append(f"Question: {message}")
 
-        response = self._generate_answer(self.context, self.model, num_beams, temperature)
+        response = self._generate_answer(self.context, self.model,**kwargs)
 
         if self.style_transfer_model is not None:
             if debug:
@@ -57,7 +57,7 @@ class DialogContextManager:
         self.context_pretty.append(response if self.sentence_completion_model else f"Answer: {response}")
         return "\n".join(self.context_pretty)
 
-    def _generate_answer(self, question, model, num_beams=1, temperature=1):
+    def _generate_answer(self, question, model,**kwargs):
         """
         This method encodes the given question, and using generate() of Pytorch,
         performs a forward pass, and calculating the final prediction based on the logits.
@@ -85,9 +85,7 @@ class DialogContextManager:
             num_return_sequences=1,
             no_repeat_ngram_size=2,
             early_stopping=True,
-            num_beams=num_beams,
-            do_sample=True if temperature != 1 else False,
-            temperature=temperature
+            **kwargs
         )
 
         preds = [
