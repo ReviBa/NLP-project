@@ -34,7 +34,7 @@ class DialogContextManager:
         self.device = device
         self.sentence_completion_model = sentence_completion_model
 
-    def write(self, message, debug=False, **kwargs):
+    def write(self, message, debug=False, num_beams=1):
         """
         write a question to model
         :param temperature: see _generate_answer()
@@ -46,18 +46,18 @@ class DialogContextManager:
         self.context.append(f"{self.speaker_str}{message}")
         self.context_pretty.append(f"Question: {message}")
 
-        response = self._generate_answer(self.context, self.model,**kwargs)
+        response = self._generate_answer(self.context, self.model, num_beams)
 
         if self.style_transfer_model is not None:
             if debug:
                 print("generic response: ", response)
-            response = self._generate_answer(response.replace("Person2:", ""), self.style_transfer_model, temperature)
+            response = self._generate_answer(response.replace("Person2:", ""), self.style_transfer_model, num_beams)
 
         self.context.append(response)
         self.context_pretty.append(response if self.sentence_completion_model else f"Answer: {response}")
         return "\n".join(self.context_pretty)
 
-    def _generate_answer(self, question, model,**kwargs):
+    def _generate_answer(self, question, model, num_beams=1):
         """
         This method encodes the given question, and using generate() of Pytorch,
         performs a forward pass, and calculating the final prediction based on the logits.
@@ -65,7 +65,6 @@ class DialogContextManager:
         :param question:
         :param model:
         :param num_beams: the number of beams to use in beam search in order to calculate probabilities
-        :param temperature: value between 0-1. lowering down will relax the difference between different probabilities.
         :return:
         """
         inputs_encoding = self.tokenizer(
@@ -85,7 +84,7 @@ class DialogContextManager:
             num_return_sequences=1,
             no_repeat_ngram_size=2,
             early_stopping=True,
-            **kwargs
+            num_beams=num_beams
         )
 
         preds = [
